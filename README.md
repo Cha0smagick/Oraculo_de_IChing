@@ -23,7 +23,7 @@ Oraculo de IChing es una aplicación de software que utiliza el antiguo arte de 
 
 - Python 3.x
 - Bibliotecas requeridas: `matplotlib`, `random`, `codecs`, `time`
-- Acceso a la API de GPT-3 para respuestas del modelo (se requiere configuración previa).
+- No se requiere configuracion previa, utiliza tecnologia open source (API key no es necesaria).
 
 ## Contribuciones
 
