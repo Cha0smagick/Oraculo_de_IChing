@@ -9,7 +9,6 @@ significados_lineas = [
     "Línea Yin en posición cambiante: Cambio en desarrollo."
 ]
 
-
 hexagramas = {
     "_________": "Hexagrama 1: El Cielo (Qian) - Lo creativo, lo fuerte. El poder creativo del cosmos.",
     "X________": "Hexagrama 2: El Receptivo (Kun) - La tierra, lo sumiso. La receptividad, la devoción.",
@@ -126,5 +125,8 @@ if st.button("Generar Hexagrama"):
     for i, linea in enumerate(hexagrama):
         st.markdown(f"**Línea {i + 1}:** {significados_lineas_hexagrama[i]}")
         st.markdown(obtener_significado(linea))
+
+    # Agrega la imagen después de mostrar los resultados del hexagrama
+    imagen_hexagrama = st.image("ruta_de_la_imagen.png", caption="Hexagrama", use_column_width=True)
 
 st.text("Conversación guardada automáticamente en la interfaz de Streamlit.")
