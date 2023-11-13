@@ -2,6 +2,8 @@
 
 ## Descripción
 
+Demo disponible en: [ ORACULO DE ICHING](https://huggingface.co/spaces/cha0smagick/Oraculo_de_iching)
+
 Oraculo de IChing es una aplicación de software que utiliza el antiguo arte de la adivinación china, conocido como el I-Ching o Libro de los Cambios, para proporcionar sabiduría y respuestas a preguntas sobre el pasado, presente o futuro aprovechando el poder de chatGPT. La aplicación genera hexagramas a partir de tiradas de moneda simuladas y los interpreta según la tradición del I-Ching, brindando una visión profunda y perspicaz de las situaciones y dilemas, totalmente objetiva, generada por IA. Oraculo de IChing es parte de la serie de software de herramientas tecnomágicas desarrolladas por el Tecnomago Cha0smagick.
 
 ## Características
