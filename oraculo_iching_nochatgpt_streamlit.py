@@ -96,7 +96,7 @@ hexagramas = {
     "__________X_": "Hexagrama 61: La Verdad Interior (Zhong Fu) - La verdad interior. La sinceridad, la autenticidad.",
     "____X____X_": "Hexagrama 62: La Preponderancia del Pequeño (Xiao Guo) - La preponderancia del pequeño. La modestia, la humildad.",
     "____X____X__": "Hexagrama 63: Después de la Consumación (Ji Ji) - Después de la consumación. La culminación, el éxito.",
-    "___X____X___": "Hexagrama 64: Antes de la Consumación (Wei Ji) - Antes de la consumación. La preparación, la finalización.
+    "___X____X___": "Hexagrama 64: Antes de la Consumación (Wei Ji) - Antes de la consumación. La preparación, la finalización."
 }
 
 def lanzar_moneda():
