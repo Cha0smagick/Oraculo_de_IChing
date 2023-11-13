@@ -1,9 +1,5 @@
 import random
-import time
-import codecs
-import torch
-import torchlit as tl
-import matplotlib.pyplot as plt
+import streamlit as st
 
 lineas = ["_________", "X________", "________X", "_________"]
 significados_lineas = [
@@ -12,6 +8,7 @@ significados_lineas = [
     "Línea Yang en posición cambiante: Cambio en desarrollo.",
     "Línea Yin en posición cambiante: Cambio en desarrollo."
 ]
+
 
 hexagramas = {
     "_________": "Hexagrama 1: El Cielo (Qian) - Lo creativo, lo fuerte. El poder creativo del cosmos.",
@@ -115,64 +112,19 @@ def interpretar_hexagrama(hexagrama):
 def obtener_significado(linea):
     return f"**Significado:** {hexagramas.get(linea, 'Hexagrama desconocido')}"
 
-def guardar_respuesta(respuesta, ruta):
-    with codecs.open(ruta, "a", "utf-8") as archivo:
-        archivo.write(respuesta + "\n")
+st.title("Lectura de Hexagramas I Ching")
 
-def guardar_imagen(hexagrama, pregunta, ruta):
-    fig, ax = plt.subplots(figsize=(8, 6))
+pregunta = st.text_input("Haz una pregunta sobre tu pasado, presente o futuro:")
 
-    # Dibujar el hexagrama a la izquierda de la imagen
-    for i, linea in enumerate(hexagrama):
-        color = 'darkgreen' if linea == 'X' else 'black'  # Cambiado a colores oscuros
-        ax.text(0.2, 0.9 - i / 7, f"{linea}", fontsize=16, ha='center', va='center', color=color, weight='bold')
-
-    ax.axis('off')
-    
-    significado_hexagrama, significados_lineas_hexagrama = interpretar_hexagrama(hexagrama)
-    
-    respuesta = (
-        f"**Interpretación del hexagrama:**\n\n"
-        f"{significado_hexagrama}\n\n"
-    )
-
-    for i, linea in enumerate(hexagrama):
-        respuesta += (
-            f"**Línea {i + 1}:** {significados_lineas_hexagrama[i]}\n"
-            f"{obtener_significado(linea)}\n\n"
-        )
-
-    ax.text(0.7, 0.5, respuesta, transform=ax.transAxes, fontsize=12, va='center', ha='left', color='darkblue', weight='bold')
-
-    # Colocar la pregunta en la parte inferior de la imagen, 3 saltos de línea más abajo
-    ax.text(0.5, 0.02, f"Pregunta del usuario: {pregunta}", transform=ax.transAxes, fontsize=12, va='center', ha='center', color='darkblue', weight='bold')
-
-    plt.savefig(ruta, bbox_inches='tight')
-    plt.close()
-
-def pregunta_usuario():
-    pregunta = input("Haz una pregunta sobre tu pasado, presente o futuro (o escribe 'salir' para salir): ")
-    return pregunta
-
-archivo_conversacion = "conversacion.txt"
-
-with codecs.open(archivo_conversacion, "a", "utf-8") as archivo:
-    archivo.write("=== Inicio de la Conversación ===\n")
-
-while True:
-    pregunta = pregunta_usuario()
-
-    if pregunta.lower() == 'salir':
-        break
-
+if st.button("Generar Hexagrama"):
     hexagrama = generar_hexagrama()
 
-    ruta_imagen = f"hexagrama_{time.time()}.png"
-    guardar_imagen(hexagrama, pregunta, ruta_imagen)
+    st.markdown("**Interpretación del hexagrama:**")
+    significado_hexagrama, significados_lineas_hexagrama = interpretar_hexagrama(hexagrama)
+    st.markdown(f"{significado_hexagrama}\n")
 
-    print(f"Hexagrama generado: {ruta_imagen}")
+    for i, linea in enumerate(hexagrama):
+        st.markdown(f"**Línea {i + 1}:** {significados_lineas_hexagrama[i]}")
+        st.markdown(obtener_significado(linea))
 
-    respuesta = f"Hexagrama generado: {ruta_imagen}"
-    guardar_respuesta(respuesta, archivo_conversacion)
-
-print("Conversación guardada en 'conversacion.txt'")
+st.text("Conversación guardada automáticamente en la interfaz de Streamlit.")
