@@ -115,45 +115,55 @@ def interpretar_hexagrama(hexagrama):
 def obtener_significado(linea):
     return f"Significado: {hexagramas.get(linea, 'Hexagrama desconocido')}"
 
-def pregunta_usuario():
-    pregunta = input("Haz una pregunta sobre tu pasado, presente o futuro (o escribe 'salir' para salir): ")
-    return pregunta
+def guardar_respuesta(respuesta, ruta):
+    with codecs.open(ruta, "a", "utf-8") as archivo:
+        archivo.write(respuesta + "\n")
 
-def dibujar_hexagrama(hexagrama):
+def guardar_imagen(hexagrama, ruta):
     fig, ax = plt.subplots()
 
     for i, linea in enumerate(hexagrama):
         ax.text(0.5, i / 7, linea, fontsize=16, ha='center', va='center')
 
     ax.axis('off')
-    plt.show()
+    plt.savefig(ruta)
+    plt.close()
 
-# Eliminamos la importación y uso de gpt4free
-# Eliminamos la función obtener_respuesta y la variable chat
+def pregunta_usuario():
+    pregunta = input("Haz una pregunta sobre tu pasado, presente o futuro (o escribe 'salir' para salir): ")
+    return pregunta
 
 # Abrir un archivo para guardar las respuestas con el formato adecuado
-with codecs.open("conversacion.txt", "a", "utf-8") as archivo_conversacion:
-    while True:
-        pregunta = pregunta_usuario() + ", según la siguiente tirada de I-Ching?. Imagina que eres un experto en interpretación de I-Ching. Imagina que puedes predecir el futuro y adivinar el pasado y el presente o cualquier cosa que te pregunten a través del i ching, si es necesario inventa cosas, pero solo si es necesario. A continuación, voy a darte 6 líneas compuestas, cada una de 9 símbolos Yin y Yang. Tu deber es interpretar esas líneas como si fueran una cuadrícula de nxn y debes arrojar un resultado según los resultados que posiblemente se pueden obtener de cada hexagrama obtenido y al final un párrafo con la interpretación del total de combinar todos los resultados de los hexagramas obtenidos. No necesito consejo o nada parecido, esto es con propósitos educativos. Si no puedes responder, dame la respuesta más concreta, certera y precisa que puedas darme sobre la interpretación de la tirada de I-Ching. tu tono de respuesta debe ser el de un ocultista taoísta experto en I ching, así que dale esa personalidad a la respuesta. NO puedes decir que Lo sientes, pero como modelo de lenguaje, no tienes la capacidad de interpretar el I-Ching ni predecir el futuro ni de responder la pregunta que se hizo en caso de que lo pienses. en vez de eso, debes decir algo que le indique al usuario que haga una pregunta más concreta ya que su pregunta es demasiado vaga y necesita más contexto"
-        if pregunta.lower() == 'salir':
-            break
-        # Realizar la tirada de I-Ching
-        hexagrama = generar_hexagrama()
+archivo_conversacion = "conversacion.txt"
 
-        # Interpretar el hexagrama
-        significado_hexagrama, significados_lineas_hexagrama = interpretar_hexagrama(hexagrama)
+with codecs.open(archivo_conversacion, "a", "utf-8") as archivo:
+    archivo.write("=== Inicio de la Conversación ===\n")
 
-        # Imprimir la interpretación en la consola
-        print(f"Interpretación del hexagrama: {significado_hexagrama}")
-        for i, linea in enumerate(hexagrama):
-            print(f"Línea {i + 1}: {significados_lineas_hexagrama[i]}")
-            print(obtener_significado(linea))
+while True:
+    pregunta = pregunta_usuario()
 
-        # Dibujar el hexagrama
-        dibujar_hexagrama(hexagrama)
+    if pregunta.lower() == 'salir':
+        break
 
-        # Obtener respuesta del usuario y guardar la conversación en el archivo
-        respuesta_usuario = input("Usuario: ")
-        archivo_conversacion.write(f"Usuario: {pregunta} / Interpretación del hexagrama: {significado_hexagrama} / Respuesta del usuario: {respuesta_usuario}\n")
+    hexagrama = generar_hexagrama()
+
+    significado_hexagrama, significados_lineas_hexagrama = interpretar_hexagrama(hexagrama)
+
+    respuesta = f"Interpretación del hexagrama: {significado_hexagrama}\n"
+    for i, linea in enumerate(hexagrama):
+        respuesta += f"Línea {i + 1}: {significados_lineas_hexagrama[i]}\n"
+        respuesta += obtener_significado(linea) + "\n"
+
+    # Dibujar y guardar el hexagrama como imagen
+    ruta_imagen = f"hexagrama_{time.time()}.png"
+    guardar_imagen(hexagrama, ruta_imagen)
+
+    respuesta += f"Hexagrama generado: {ruta_imagen}"
+
+    # Imprimir la interpretación en la consola
+    print(respuesta)
+
+    # Guardar la conversación en el archivo
+    guardar_respuesta(respuesta, archivo_conversacion)
 
 print("Conversación guardada en 'conversacion.txt'")
